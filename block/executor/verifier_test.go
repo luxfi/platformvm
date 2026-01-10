@@ -14,6 +14,7 @@ import (
 	consensuscontext "github.com/luxfi/consensus/context"
 	consensustest "github.com/luxfi/consensus/test/helpers"
 	"github.com/luxfi/constants"
+	"github.com/luxfi/container/iterator"
 	"github.com/luxfi/crypto/bls"
 	"github.com/luxfi/crypto/bls/signer/localsigner"
 	"github.com/luxfi/database"
@@ -40,7 +41,6 @@ import (
 	"github.com/luxfi/upgrade"
 	"github.com/luxfi/upgrade/upgradetest"
 	"github.com/luxfi/utils"
-	"github.com/luxfi/container/iterator"
 	"github.com/luxfi/vm/chains/atomic"
 	"github.com/luxfi/vm/components/gas"
 	"github.com/luxfi/vm/components/lux"
@@ -213,7 +213,7 @@ func TestVerifierVisitAtomicBlock(t *testing.T) {
 		exportedOutput = &lux.TransferableOutput{
 			Asset: lux.Asset{ID: verifier.ctx.XAssetID},
 			Out: &secp256k1fx.TransferOutput{
-				Amt:          constants.NanoLux,
+				Amt:          constants.MicroLux,
 				OutputOwners: secp256k1fx.OutputOwners{},
 			},
 		}
@@ -1277,9 +1277,9 @@ func TestDeactivateLowBalanceL1Validators(t *testing.T) {
 				EndAccumulatedFee: endAccumulatedFee,
 			}
 		}
-		fractionalTimeL1Validator0 = newL1Validator(1 * constants.NanoLux) // lasts .5 seconds
-		fractionalTimeL1Validator1 = newL1Validator(1 * constants.NanoLux) // lasts .5 seconds
-		wholeTimeL1Validator       = newL1Validator(2 * constants.NanoLux) // lasts 1 second
+		fractionalTimeL1Validator0 = newL1Validator(1 * constants.MicroLux) // lasts .5 seconds
+		fractionalTimeL1Validator1 = newL1Validator(1 * constants.MicroLux) // lasts .5 seconds
+		wholeTimeL1Validator       = newL1Validator(2 * constants.MicroLux) // lasts 1 second
 	)
 
 	tests := []struct {
@@ -1342,7 +1342,7 @@ func TestDeactivateLowBalanceL1Validators(t *testing.T) {
 			config := validatorfee.Config{
 				Capacity:                 builder.LocalValidatorFeeConfig.Capacity,
 				Target:                   builder.LocalValidatorFeeConfig.Target,
-				MinPrice:                 gas.Price(2 * constants.NanoLux), // Min price is increased to allow fractional fees
+				MinPrice:                 gas.Price(2 * constants.MicroLux), // Min price is increased to allow fractional fees
 				ExcessConversionConstant: builder.LocalValidatorFeeConfig.ExcessConversionConstant,
 			}
 			lowBalanceL1ValidatorsEvicted, err := deactivateLowBalanceL1Validators(config, diff)
@@ -1369,7 +1369,7 @@ func TestDeactivateLowBalanceL1ValidatorBlockChanges(t *testing.T) {
 		NodeID:            ids.GenerateTestNodeID(),
 		PublicKey:         bls.PublicKeyToUncompressedBytes(signer.PublicKey()),
 		Weight:            1,
-		EndAccumulatedFee: 3 * constants.NanoLux, // lasts 1.5 seconds
+		EndAccumulatedFee: 3 * constants.MicroLux, // lasts 1.5 seconds
 	}
 
 	tests := []struct {
@@ -1430,7 +1430,7 @@ func TestDeactivateLowBalanceL1ValidatorBlockChanges(t *testing.T) {
 				ValidatorFeeConfig: validatorfee.Config{
 					Capacity:                 builder.LocalValidatorFeeConfig.Capacity,
 					Target:                   builder.LocalValidatorFeeConfig.Target,
-					MinPrice:                 gas.Price(2 * constants.NanoLux), // Min price is increased to allow fractional fees
+					MinPrice:                 gas.Price(2 * constants.MicroLux), // Min price is increased to allow fractional fees
 					ExcessConversionConstant: builder.LocalValidatorFeeConfig.ExcessConversionConstant,
 				},
 			})

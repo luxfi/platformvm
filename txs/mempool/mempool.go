@@ -10,7 +10,7 @@ import (
 	"github.com/luxfi/ids"
 	"github.com/luxfi/metric"
 	"github.com/luxfi/platformvm/txs"
-	txmempool "github.com/luxfi/vm/vms/txs/mempool"
+	txmempool "github.com/luxfi/vm/txs/mempool"
 )
 
 var (

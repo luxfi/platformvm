@@ -12,13 +12,13 @@ import (
 
 	"github.com/luxfi/cache"
 	validators "github.com/luxfi/consensus/validator"
+	"github.com/luxfi/container/iterator"
 	"github.com/luxfi/crypto/bls"
 	"github.com/luxfi/database"
 	"github.com/luxfi/ids"
+	"github.com/luxfi/math"
 	"github.com/luxfi/platformvm/block"
 	"github.com/luxfi/utils"
-	"github.com/luxfi/container/iterator"
-	"github.com/luxfi/utils/math"
 	"github.com/luxfi/utils/maybe"
 )
 

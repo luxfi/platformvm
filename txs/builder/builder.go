@@ -11,15 +11,15 @@ import (
 	consensusctx "github.com/luxfi/consensus/context"
 	"github.com/luxfi/crypto/secp256k1"
 	"github.com/luxfi/ids"
+	"github.com/luxfi/math"
 	"github.com/luxfi/platformvm/config"
+	"github.com/luxfi/platformvm/fx"
 	"github.com/luxfi/platformvm/state"
 	"github.com/luxfi/platformvm/txs"
 	"github.com/luxfi/platformvm/utxo"
 	"github.com/luxfi/timer/mockable"
 	"github.com/luxfi/utils"
-	"github.com/luxfi/utils/math"
 	"github.com/luxfi/vm/components/lux"
-	"github.com/luxfi/vm/platformvm/fx"
 	"github.com/luxfi/vm/secp256k1fx"
 )
 
@@ -82,11 +82,11 @@ type DecisionTxBuilder interface {
 		changeAddr ids.ShortID,
 	) (*txs.Tx, error)
 
-	// threshold: [threshold] of [ownerAddrs] needed to manage this chain
-	// ownerAddrs: control addresses for the new chain
+	// threshold: [threshold] of [ownerAddrs] needed to manage this network
+	// ownerAddrs: control addresses for the new network
 	// keys: keys to pay the fee
 	// changeAddr: address to send change to, if there is any
-	NewCreateChainTx(
+	NewCreateNetworkTx(
 		threshold uint32,
 		ownerAddrs []ids.ShortID,
 		keys []*secp256k1.PrivateKey,
@@ -381,8 +381,8 @@ func (b *builder) NewCreateChainTx(
 	keys []*secp256k1.PrivateKey,
 	changeAddr ids.ShortID,
 ) (*txs.Tx, error) {
-	createBlockchainTxFee := b.cfg.CreateChainTxFee
-	ins, outs, _, signers, err := b.Spend(b.state, keys, 0, createBlockchainTxFee, changeAddr)
+	createChainTxFee := b.cfg.CreateChainTxFee
+	ins, outs, _, signers, err := b.Spend(b.state, keys, 0, createChainTxFee, changeAddr)
 	if err != nil {
 		return nil, fmt.Errorf("couldn't generate tx inputs/outputs: %w", err)
 	}
@@ -404,12 +404,12 @@ func (b *builder) NewCreateChainTx(
 			Ins:          ins,
 			Outs:         outs,
 		}},
-		ChainID:        netID,
-		BlockchainName: chainName,
-		VMID:           vmID,
-		FxIDs:          fxIDs,
-		GenesisData:    genesisData,
-		ChainAuth:      chainAuth,
+		ValidateNetworkID: netID,
+		BlockchainName:    chainName,
+		VMID:              vmID,
+		FxIDs:             fxIDs,
+		GenesisData:       genesisData,
+		ChainAuth:         chainAuth,
 	}
 	tx, err := txs.NewSigned(utx, txs.Codec, signers)
 	if err != nil {
@@ -418,14 +418,14 @@ func (b *builder) NewCreateChainTx(
 	return tx, tx.SyntacticVerify(b.ctx)
 }
 
-func (b *builder) NewCreateChainTx(
+func (b *builder) NewCreateNetworkTx(
 	threshold uint32,
 	ownerAddrs []ids.ShortID,
 	keys []*secp256k1.PrivateKey,
 	changeAddr ids.ShortID,
 ) (*txs.Tx, error) {
-	createChainTxFee := b.cfg.CreateNetTxFee
-	ins, outs, _, signers, err := b.Spend(b.state, keys, 0, createChainTxFee, changeAddr)
+	createNetworkTxFee := b.cfg.CreateNetworkTxFee
+	ins, outs, _, signers, err := b.Spend(b.state, keys, 0, createNetworkTxFee, changeAddr)
 	if err != nil {
 		return nil, fmt.Errorf("couldn't generate tx inputs/outputs: %w", err)
 	}
@@ -434,7 +434,7 @@ func (b *builder) NewCreateChainTx(
 	utils.Sort(ownerAddrs)
 
 	// Create the tx
-	utx := &txs.CreateChainTx{
+	utx := &txs.CreateNetworkTx{
 		BaseTx: txs.BaseTx{BaseTx: lux.BaseTx{
 			NetworkID:    b.NetworkID,
 			BlockchainID: b.ChainID,

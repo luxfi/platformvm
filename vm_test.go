@@ -6,6 +6,7 @@ package platformvm
 import (
 	"bytes"
 	"context"
+
 	// "math" // unused
 	"testing"
 	"time"
@@ -14,6 +15,7 @@ import (
 
 	consensusctx "github.com/luxfi/consensus/context"
 	consensustest "github.com/luxfi/consensus/test/helpers"
+
 	// "github.com/luxfi/consensus/engine/chain/bootstrap" // unused
 	linearblock "github.com/luxfi/consensus/engine/chain/block"
 	// "github.com/luxfi/consensus/core" // unused
@@ -28,7 +30,9 @@ import (
 	// "github.com/luxfi/consensus/networking/timeout" // unused
 	validators "github.com/luxfi/consensus/validator"
 	"github.com/luxfi/consensus/validator/uptime"
+
 	// "github.com/luxfi/crypto/bls" // unused
+	"github.com/luxfi/benchlist"
 	"github.com/luxfi/crypto/secp256k1"
 	"github.com/luxfi/database"
 	"github.com/luxfi/database/memdb"
@@ -37,23 +41,25 @@ import (
 	"github.com/luxfi/math/set"
 	"github.com/luxfi/vm/chains"
 	"github.com/luxfi/vm/chains/atomic"
+
 	// "github.com/luxfi/node/message" // unused
 	// "github.com/luxfi/node/nets" // unused
 	// "github.com/luxfi/p2p" // unused
 	"github.com/luxfi/constants"
 	"github.com/luxfi/crypto/bls/signer/localsigner"
 	"github.com/luxfi/upgrade/upgradetest"
-	// "github.com/luxfi/utils/math/meter" // unused
+
+	// "github.com/luxfi/math/meter" // unused
 	// "github.com/luxfi/utils/resource" // unused
 	// "github.com/luxfi/timer" // unused
-	"github.com/luxfi/constants"
 	"github.com/luxfi/platformvm/block"
 	"github.com/luxfi/platformvm/config"
 	"github.com/luxfi/platformvm/genesis/genesistest"
 	"github.com/luxfi/platformvm/reward"
+	"github.com/luxfi/platformvm/signer"
 	"github.com/luxfi/vm/components/gas"
 	"github.com/luxfi/vm/components/lux"
-	"github.com/luxfi/vm/platformvm/signer"
+
 	// "github.com/luxfi/platformvm/state" // unused after TestGenesis simplification
 	"github.com/luxfi/platformvm/status"
 	// "github.com/luxfi/platformvm/testcontext" // unused - using consensustest.Context instead
@@ -62,9 +68,10 @@ import (
 	"github.com/luxfi/platformvm/validators/fee"
 	"github.com/luxfi/sdk/wallet/chain/p/wallet"
 	"github.com/luxfi/vm/secp256k1fx"
+
 	// "github.com/luxfi/metric" // unused
 
-	// p2ppb "github.com/luxfi/vm/proto/pb/p2p" // unused
+	// p2ppb "github.com/luxfi/node/proto/pb/p2p" // unused
 	// smcon "github.com/luxfi/consensus/engine/chain/block" // unused
 	// smeng "github.com/luxfi/consensus/engine/chain/block" // unused
 	// smblock "github.com/luxfi/consensus/engine/chain/block" // unused
@@ -130,8 +137,8 @@ type mockValidatorState struct{}
 var _ consensusctx.ValidatorState = (*mockValidatorState)(nil)
 
 func (m *mockValidatorState) GetChainID(netID ids.ID) (ids.ID, error) {
-	// Return the chain ID for the given net ID
-	return ids.Empty, nil
+	// Return the platform chain ID for any network in tests.
+	return constants.PlatformChainID, nil
 }
 
 func (m *mockValidatorState) GetNetworkID(chainID ids.ID) (ids.ID, error) {
@@ -141,11 +148,6 @@ func (m *mockValidatorState) GetNetworkID(chainID ids.ID) (ids.ID, error) {
 
 func (m *mockValidatorState) GetNetID(chainID ids.ID) (ids.ID, error) {
 	// Return Primary Network ID for all chains
-	return constants.PrimaryNetworkID, nil
-}
-
-func (m *mockValidatorState) GetChainID(chainID ids.ID) (ids.ID, error) {
-	// Return Primary Network ID for all chains (chain is the network)
 	return constants.PrimaryNetworkID, nil
 }
 
@@ -278,7 +280,7 @@ func buildAndAcceptStandardBlock(vm *VM) error {
 func createAndAcceptNet(t *testing.T, vm *VM, wallet wallet.Wallet) *txs.Tx {
 	require := require.New(t)
 
-	netTx, err := wallet.IssueCreateChainTx(
+	netTx, err := wallet.IssueCreateNetworkTx(
 		&secp256k1fx.OutputOwners{
 			Threshold: 2,
 			Addrs: []ids.ShortID{
@@ -309,10 +311,10 @@ func newWallet(t testing.TB, vm *VM, c walletConfig) wallet.Wallet {
 	}
 	// Create a basic Config for wallet
 	walletConfig := &config.Config{
-		TxFee:                 constants.MilliLux,
-		CreateAssetTxFee:      constants.MilliLux,
-		CreateNetTxFee:        constants.Lux,
-		CreateChainTxFee: constants.Lux,
+		TxFee:              constants.MilliLux,
+		CreateAssetTxFee:   constants.MilliLux,
+		CreateNetworkTxFee: constants.Lux,
+		CreateChainTxFee:   constants.Lux,
 	}
 	return txstest.NewWalletWithOptions(
 		t,
@@ -714,19 +716,13 @@ func (n *noOpBenchlist) RegisterChain(chainID ids.ID, vdrs validators.Manager) e
 	return nil
 }
 
-func (n *noOpBenchlist) Benchable(chainID ids.ID, nodeID ids.NodeID) benchable {
+func (n *noOpBenchlist) Benchable(chainID ids.ID, nodeID ids.NodeID) benchlist.Benchable {
 	return n
 }
 
 func (n *noOpBenchlist) Benched(chainID ids.ID, nodeID ids.NodeID) {}
 
 func (n *noOpBenchlist) Unbenched(chainID ids.ID, nodeID ids.NodeID) {}
-
-// benchable is a minimal local stand-in to avoid importing node/benchlist.
-type benchable interface {
-	Benched(chainID ids.ID, nodeID ids.NodeID)
-	Unbenched(chainID ids.ID, nodeID ids.NodeID)
-}
 
 func TestRewardValidatorAccept(t *testing.T) {
 	require := require.New(t)
@@ -935,7 +931,7 @@ func TestCreateNet(t *testing.T) {
 	defer vm.ctx.Lock.Unlock()
 
 	wallet := newWallet(t, vm, walletConfig{})
-	createNetTx, err := wallet.IssueCreateChainTx(
+	createNetTx, err := wallet.IssueCreateNetworkTx(
 		&secp256k1fx.OutputOwners{
 			Threshold: 1,
 			Addrs: []ids.ShortID{
@@ -1742,7 +1738,7 @@ func TestRemovePermissionedValidatorDuringAddPending(t *testing.T) {
 	vm.ctx.Lock.Lock()
 	require.NoError(buildAndAcceptStandardBlock(vm))
 
-	createNetTx, err := wallet.IssueCreateChainTx(
+	createNetTx, err := wallet.IssueCreateNetworkTx(
 		&secp256k1fx.OutputOwners{
 			Threshold: 1,
 			Addrs:     []ids.ShortID{genesistest.DefaultFundedKeys[0].Address()},
@@ -1812,7 +1808,7 @@ func TestTransferChainOwnershipTx(t *testing.T) {
 		Threshold: 1,
 		Addrs:     []ids.ShortID{genesistest.DefaultFundedKeys[0].Address()},
 	}
-	createNetTx, err := wallet.IssueCreateChainTx(
+	createNetTx, err := wallet.IssueCreateNetworkTx(
 		expectedNetOwner,
 	)
 	require.NoError(err)

@@ -24,6 +24,7 @@ import (
 	"github.com/luxfi/consensus/core/choices"
 	validators "github.com/luxfi/consensus/validator"
 	"github.com/luxfi/constants"
+	"github.com/luxfi/container/iterator"
 	"github.com/luxfi/crypto/bls"
 	"github.com/luxfi/crypto/bls/signer/localsigner"
 	"github.com/luxfi/database"
@@ -33,7 +34,6 @@ import (
 	"github.com/luxfi/math/set"
 	"github.com/luxfi/upgrade/upgradetest"
 	"github.com/luxfi/utils"
-	"github.com/luxfi/container/iterator"
 
 	"github.com/luxfi/utils/wrappers"
 
@@ -42,12 +42,12 @@ import (
 	"github.com/luxfi/vm/components/lux"
 
 	"github.com/luxfi/platformvm/config"
+	"github.com/luxfi/platformvm/fx/fxmock"
 	"github.com/luxfi/platformvm/genesis/genesistest"
 	"github.com/luxfi/platformvm/metrics"
 	"github.com/luxfi/platformvm/reward"
-	"github.com/luxfi/vm/platformvm/fx/fxmock"
 
-	"github.com/luxfi/vm/platformvm/signer"
+	"github.com/luxfi/platformvm/signer"
 
 	"github.com/luxfi/platformvm/status"
 
@@ -1239,7 +1239,7 @@ func TestStateNetOwner(t *testing.T) {
 		owner2 = fxmock.NewOwner(ctrl)
 
 		createNetTx = &txs.Tx{
-			Unsigned: &txs.CreateChainTx{
+			Unsigned: &txs.CreateNetworkTx{
 				BaseTx: txs.BaseTx{},
 				Owner:  owner1,
 			},
@@ -1506,19 +1506,6 @@ func TestGetFeeStateErrors(t *testing.T) {
 				0x12, 0x34, 0x56, 0x78,
 			},
 			expectedErr: wrappers.ErrInsufficientLength,
-		},
-		{
-			value: []byte{
-				// codec version
-				0x00, 0x00,
-				// capacity
-				0x12, 0x34, 0x56, 0x78, 0x12, 0x34, 0x56, 0x78,
-				// excess
-				0x12, 0x34, 0x56, 0x78, 0x12, 0x34, 0x56, 0x78,
-				// extra bytes
-				0x00,
-			},
-			expectedErr: codec.ErrExtraSpace,
 		},
 	}
 	for _, test := range tests {

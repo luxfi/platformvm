@@ -25,7 +25,7 @@ import (
 	"github.com/luxfi/platformvm/txs/fee"
 	"github.com/luxfi/timer/mockable"
 	"github.com/luxfi/vm/components/gas"
-	"github.com/luxfi/vm/vms/txs/mempool"
+	"github.com/luxfi/vm/txs/mempool"
 
 	consensusctx "github.com/luxfi/consensus/context"
 	chainblock "github.com/luxfi/consensus/engine/chain/block"

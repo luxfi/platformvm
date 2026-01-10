@@ -10,6 +10,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
+	"github.com/luxfi/crypto/hash"
 	"github.com/luxfi/crypto/secp256k1"
 	"github.com/luxfi/database"
 	"github.com/luxfi/ids"
@@ -19,7 +20,6 @@ import (
 	"github.com/luxfi/platformvm/status"
 	"github.com/luxfi/platformvm/txs"
 	"github.com/luxfi/upgrade/upgradetest"
-	"github.com/luxfi/crypto/hash"
 	"github.com/luxfi/vm/secp256k1fx"
 )
 

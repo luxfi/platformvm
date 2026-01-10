@@ -111,8 +111,8 @@ func TestConfigUnmarshal(t *testing.T) {
 			MempoolPruneFrequency:         time.Minute,
 			TxFee:                         14,
 			CreateAssetTxFee:              15,
-			CreateNetTxFee:                16,
-			CreateChainTxFee:         17,
+			CreateNetworkTxFee:            16,
+			CreateChainTxFee:              17,
 			AddPrimaryNetworkValidatorFee: 18,
 			AddPrimaryNetworkDelegatorFee: 19,
 		}

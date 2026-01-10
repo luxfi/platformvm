@@ -14,7 +14,7 @@ import (
 	"github.com/luxfi/ids"
 	"github.com/luxfi/platformvm/txs"
 
-	"github.com/luxfi/vm/vms/txs/mempool"
+	"github.com/luxfi/vm/txs/mempool"
 
 	pmempool "github.com/luxfi/platformvm/txs/mempool"
 )

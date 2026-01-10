@@ -9,9 +9,7 @@ import (
 )
 
 var (
-	_ Fx = (*secp256k1fx.Fx)(nil)
-	// Note: secp256k1fx.OutputOwners may not implement Owner directly
-	// _ Owner = (*secp256k1fx.OutputOwners)(nil)
+	_ Fx    = (*secp256k1fx.Fx)(nil)
 	_ Owned = (*secp256k1fx.TransferOutput)(nil)
 )
 

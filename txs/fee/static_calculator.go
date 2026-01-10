@@ -70,7 +70,7 @@ func (c *staticVisitor) CreateChainTx(*txs.CreateChainTx) error {
 
 // Removed in regenesis
 // func (c *staticVisitor) CreateNetTx(*txs.CreateNetTx) error {
-// 	c.fee = c.config.CreateNetTxFee
+// 	c.fee = c.config.CreateNetworkTxFee
 // 	return nil
 // }
 
@@ -150,8 +150,8 @@ func (v *staticVisitor) AddChainValidatorTx(*txs.AddChainValidatorTx) error {
 	return nil
 }
 
-func (v *staticVisitor) CreateChainTx(*txs.CreateChainTx) error {
-	v.fee = v.config.CreateChainTxFee
+func (v *staticVisitor) CreateNetworkTx(*txs.CreateNetworkTx) error {
+	v.fee = v.config.CreateNetworkTxFee
 	return nil
 }
 

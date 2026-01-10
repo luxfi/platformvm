@@ -6,8 +6,8 @@ package warp
 import (
 	"fmt"
 
-	"github.com/luxfi/ids"
 	"github.com/luxfi/crypto/hash"
+	"github.com/luxfi/ids"
 )
 
 // UnsignedMessage defines the standard format for an unsigned Warp message.

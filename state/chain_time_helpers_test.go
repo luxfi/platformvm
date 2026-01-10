@@ -88,7 +88,7 @@ func TestGetNextStakerChangeTime(t *testing.T) {
 	config := validatorfee.Config{
 		Capacity:                 builder.LocalValidatorFeeConfig.Capacity,
 		Target:                   builder.LocalValidatorFeeConfig.Target,
-		MinPrice:                 gas.Price(2 * constants.NanoLux), // Increase minimum price to test fractional seconds
+		MinPrice:                 gas.Price(2 * constants.MicroLux), // Increase minimum price to test fractional seconds
 		ExcessConversionConstant: builder.LocalValidatorFeeConfig.ExcessConversionConstant,
 	}
 

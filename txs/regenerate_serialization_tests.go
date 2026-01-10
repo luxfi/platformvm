@@ -9,12 +9,9 @@
 package main
 
 import (
-	"encoding/hex"
 	"fmt"
-	"os"
 	"os/exec"
 	"regexp"
-	"strings"
 )
 
 func main() {

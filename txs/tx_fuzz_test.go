@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/luxfi/codec"
 	"github.com/luxfi/codec/linearcodec"
 	"github.com/luxfi/crypto/secp256k1"
 	"github.com/luxfi/ids"
@@ -114,8 +115,8 @@ func FuzzBaseTx(f *testing.F) {
 		}
 
 		// Try to serialize
-		p := wrappers.Packer{MaxSize: 1024 * 1024}
-		err := c.MarshalInto(baseTx, &p)
+		p := codec.NewPacker(1024 * 1024)
+		err := c.MarshalInto(baseTx, p)
 		if err != nil {
 			// Some combinations might be invalid
 			return
@@ -123,8 +124,8 @@ func FuzzBaseTx(f *testing.F) {
 
 		// Try to deserialize
 		var parsed BaseTx
-		p2 := wrappers.Packer{Bytes: p.Bytes, MaxSize: 1024 * 1024}
-		err = c.UnmarshalFrom(&p2, &parsed)
+		p2 := codec.PackerFromBytes(p.Bytes)
+		err = c.UnmarshalFrom(p2, &parsed)
 		if err != nil {
 			t.Errorf("Failed to unmarshal BaseTx: %v", err)
 			return
@@ -177,17 +178,17 @@ func FuzzCreateChainTx(f *testing.F) {
 					Ins:          []*lux.TransferableInput{},
 				},
 			},
-			ChainID:        ids.GenerateTestID(),
-			BlockchainName: string(chainName),
-			VMID:           vmID,
-			FxIDs:          []ids.ID{},
-			GenesisData:    genesisData,
-			ChainAuth:      &secp256k1fx.Input{},
+			ValidateNetworkID: ids.GenerateTestID(),
+			BlockchainName:    string(chainName),
+			VMID:              vmID,
+			FxIDs:             []ids.ID{},
+			GenesisData:       genesisData,
+			ChainAuth:         &secp256k1fx.Input{},
 		}
 
 		// Try to serialize
-		p := wrappers.Packer{MaxSize: 10 * 1024 * 1024}
-		err := c.MarshalInto(tx, &p)
+		p := codec.NewPacker(10 * 1024 * 1024)
+		err := c.MarshalInto(tx, p)
 		if err != nil {
 			// Some combinations might be invalid
 			return
@@ -195,8 +196,8 @@ func FuzzCreateChainTx(f *testing.F) {
 
 		// Try to deserialize
 		var parsed CreateChainTx
-		p2 := wrappers.Packer{Bytes: p.Bytes, MaxSize: 10 * 1024 * 1024}
-		err = c.UnmarshalFrom(&p2, &parsed)
+		p2 := codec.PackerFromBytes(p.Bytes)
+		err = c.UnmarshalFrom(p2, &parsed)
 		if err != nil {
 			t.Errorf("Failed to unmarshal CreateChainTx: %v", err)
 			return
@@ -506,7 +507,7 @@ func (v *visitor) AddValidatorTx(*AddValidatorTx) error                         
 func (v *visitor) AdvanceTimeTx(*AdvanceTimeTx) error                               { return nil }
 func (v *visitor) BaseTx(*BaseTx) error                                             { return nil }
 func (v *visitor) CreateChainTx(*CreateChainTx) error                               { return nil }
-func (v *visitor) CreateChainTx(*CreateChainTx) error                               { return nil }
+func (v *visitor) CreateNetworkTx(*CreateNetworkTx) error                           { return nil }
 func (v *visitor) ExportTx(*ExportTx) error                                         { return nil }
 func (v *visitor) ImportTx(*ImportTx) error                                         { return nil }
 func (v *visitor) RemoveChainValidatorTx(*RemoveChainValidatorTx) error             { return nil }

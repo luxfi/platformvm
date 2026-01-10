@@ -10,11 +10,11 @@ import (
 
 	"github.com/luxfi/database"
 	"github.com/luxfi/ids"
+	"github.com/luxfi/math"
 	"github.com/luxfi/platformvm/reward"
 	"github.com/luxfi/platformvm/state"
 	"github.com/luxfi/platformvm/txs"
 	"github.com/luxfi/platformvm/txs/fee"
-	"github.com/luxfi/utils/math"
 	"github.com/luxfi/vm/components/lux"
 	"github.com/luxfi/vm/components/verify"
 )
@@ -91,7 +91,7 @@ func (*proposalTxExecutor) CreateChainTx(*txs.CreateChainTx) error {
 	return ErrWrongTxType
 }
 
-func (*proposalTxExecutor) CreateChainTx(*txs.CreateChainTx) error {
+func (*proposalTxExecutor) CreateNetworkTx(*txs.CreateNetworkTx) error {
 	return ErrWrongTxType
 }
 

@@ -36,8 +36,8 @@ var (
 type CreateChainTx struct {
 	// Metadata, inputs and outputs
 	BaseTx `serialize:"true"`
-	// ID of the Chain that validates this blockchain
-	ChainID ids.ID `serialize:"true" json:"chainID"`
+	// ID of the Network that validates this chain
+	ValidateNetworkID ids.ID `serialize:"true" json:"networkID"`
 	// A human readable name for the blockchain; need not be unique
 	BlockchainName string `serialize:"true" json:"blockchainName"`
 	// ID of the VM running on the new blockchain
@@ -56,7 +56,7 @@ func (tx *CreateChainTx) SyntacticVerify(ctx *consensusctx.Context) error {
 		return ErrNilTx
 	case tx.SyntacticallyVerified: // already passed syntactic verification
 		return nil
-	case tx.ChainID == constants.PrimaryNetworkID:
+	case tx.ValidateNetworkID == constants.PrimaryNetworkID:
 		return ErrCantValidatePrimaryNetwork
 	case len(tx.BlockchainName) > MaxNameLen:
 		return errNameTooLong

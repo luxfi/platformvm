@@ -17,10 +17,10 @@ import (
 	"github.com/luxfi/vm/secp256k1fx"
 )
 
-func TestCreateChainTxAP3FeeChange(t *testing.T) {
+func TestCreateNetworkTxAP3FeeChange(t *testing.T) {
 	// Test the fee change at Apricot Phase 3
-	// Pre-AP3: CreateChainTxFee = 0
-	// Post-AP3: CreateChainTxFee = CreateChainTxFee from config (100 * defaultTxFee)
+	// Pre-AP3: CreateNetworkTxFee = 0
+	// Post-AP3: CreateNetworkTxFee = CreateNetworkTxFee from config (100 * defaultTxFee)
 	tests := []struct {
 		name        string
 		preAP3      bool
@@ -63,7 +63,7 @@ func TestCreateChainTxAP3FeeChange(t *testing.T) {
 			})
 
 			// Create a chain using the wallet
-			tx, err := wallet.IssueCreateChainTx(
+			tx, err := wallet.IssueCreateNetworkTx(
 				&secp256k1fx.OutputOwners{
 					Threshold: 1,
 					Addrs: []ids.ShortID{
@@ -89,9 +89,9 @@ func TestCreateChainTxAP3FeeChange(t *testing.T) {
 	}
 }
 
-// TestCreateChainTxInsufficientFunds tests that CreateChain transactions fail
+// TestCreateNetworkTxInsufficientFunds tests that CreateChain transactions fail
 // when the wallet doesn't have enough funds to pay the fee
-func TestCreateChainTxInsufficientFunds(t *testing.T) {
+func TestCreateNetworkTxInsufficientFunds(t *testing.T) {
 	require := require.New(t)
 
 	env := newEnvironment(t, upgradetest.Latest)
@@ -109,7 +109,7 @@ func TestCreateChainTxInsufficientFunds(t *testing.T) {
 	})
 
 	// Try to create a chain - should fail due to insufficient funds
-	_, err := wallet.IssueCreateChainTx(
+	_, err := wallet.IssueCreateNetworkTx(
 		&secp256k1fx.OutputOwners{
 			Threshold: 1,
 			Addrs: []ids.ShortID{

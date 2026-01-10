@@ -18,15 +18,9 @@ import (
 )
 
 func TestUnsignedCreateChainTxVerify(t *testing.T) {
-	testChainID := ids.GenerateTestID() // Use a test chain ID instead of empty
 	ctx := &consensusctx.Context{
 		NetworkID: constants.UnitTestID,
-
-		ChainID: ids.GenerateTestID(),
-	}
-	ctx = &consensusctx.Context{
-
-		ChainID: testChainID,
+		ChainID:   ids.GenerateTestID(),
 	}
 	testNet1ID := ids.GenerateTestID()
 
@@ -75,7 +69,7 @@ func TestUnsignedCreateChainTxVerify(t *testing.T) {
 			fxIDs:       nil,
 			chainName:   "yeet",
 			setup: func(tx *CreateChainTx) *CreateChainTx {
-				tx.ChainID = constants.PrimaryNetworkID
+				tx.ValidateNetworkID = constants.PrimaryNetworkID
 				return tx
 			},
 			expectedErr: ErrCantValidatePrimaryNetwork,
@@ -157,12 +151,12 @@ func TestUnsignedCreateChainTxVerify(t *testing.T) {
 					Ins:          inputs,
 					Outs:         outputs,
 				}},
-				ChainID:        test.netID,
-				BlockchainName: test.chainName,
-				VMID:           test.vmID,
-				FxIDs:          test.fxIDs,
-				GenesisData:    test.genesisData,
-				ChainAuth:      chainAuth,
+				ValidateNetworkID: test.netID,
+				BlockchainName:    test.chainName,
+				VMID:              test.vmID,
+				FxIDs:             test.fxIDs,
+				GenesisData:       test.genesisData,
+				ChainAuth:         chainAuth,
 			}
 
 			signers := [][]*secp256k1.PrivateKey{preFundedKeys}

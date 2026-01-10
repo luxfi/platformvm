@@ -10,6 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/luxfi/constants"
+	"github.com/luxfi/crypto/hash"
 	"github.com/luxfi/crypto/secp256k1"
 	"github.com/luxfi/database"
 	"github.com/luxfi/ids"
@@ -18,7 +19,6 @@ import (
 	"github.com/luxfi/platformvm/state"
 	"github.com/luxfi/platformvm/txs"
 	"github.com/luxfi/upgrade/upgradetest"
-	"github.com/luxfi/crypto/hash"
 	"github.com/luxfi/vm/secp256k1fx"
 )
 
@@ -128,7 +128,7 @@ func TestCreateChainTxNoSuchNet(t *testing.T) {
 	)
 	require.NoError(err)
 
-	tx.Unsigned.(*txs.CreateChainTx).ChainID = ids.GenerateTestID()
+	tx.Unsigned.(*txs.CreateChainTx).ValidateNetworkID = ids.GenerateTestID()
 
 	stateDiff, err := state.NewDiff(lastAcceptedID, env)
 	require.NoError(err)

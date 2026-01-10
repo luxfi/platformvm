@@ -9,9 +9,9 @@ import (
 	"github.com/luxfi/constants"
 	"github.com/luxfi/database"
 	"github.com/luxfi/ids"
+	"github.com/luxfi/math"
 	"github.com/luxfi/platformvm/state"
 	"github.com/luxfi/platformvm/txs"
-	"github.com/luxfi/utils/math"
 )
 
 type addValidatorRules struct {

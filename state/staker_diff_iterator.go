@@ -4,9 +4,9 @@
 package state
 
 import (
+	"github.com/luxfi/container/iterator"
 	"github.com/luxfi/platformvm/txs"
 	"github.com/luxfi/utils/heap"
-	"github.com/luxfi/container/iterator"
 )
 
 var (

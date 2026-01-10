@@ -13,13 +13,13 @@ import (
 	reflect "reflect"
 	time "time"
 
+	iterator "github.com/luxfi/container/iterator"
 	ids "github.com/luxfi/ids"
+	fx "github.com/luxfi/platformvm/fx"
 	status "github.com/luxfi/platformvm/status"
 	txs "github.com/luxfi/platformvm/txs"
-	iterator "github.com/luxfi/container/iterator"
 	gas "github.com/luxfi/vm/components/gas"
 	lux "github.com/luxfi/vm/components/lux"
-	fx "github.com/luxfi/vm/platformvm/fx"
 	gomock "go.uber.org/mock/gomock"
 )
 

@@ -10,6 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/luxfi/constants"
+	"github.com/luxfi/container/iterator"
 	"github.com/luxfi/crypto/bls"
 	"github.com/luxfi/crypto/bls/signer/localsigner"
 	"github.com/luxfi/genesis/builder"
@@ -21,7 +22,6 @@ import (
 	"github.com/luxfi/platformvm/validators/fee"
 	"github.com/luxfi/timer/mockable"
 	"github.com/luxfi/upgrade/upgradetest"
-	"github.com/luxfi/container/iterator"
 	"github.com/luxfi/vm/components/gas"
 )
 

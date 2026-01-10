@@ -34,6 +34,7 @@ import (
 	"github.com/luxfi/math/set"
 	"github.com/luxfi/platformvm/block"
 	"github.com/luxfi/platformvm/config"
+	"github.com/luxfi/platformvm/fx"
 	"github.com/luxfi/platformvm/network"
 	"github.com/luxfi/platformvm/reward"
 	"github.com/luxfi/platformvm/state"
@@ -45,7 +46,6 @@ import (
 	"github.com/luxfi/utils/json"
 	"github.com/luxfi/version"
 	"github.com/luxfi/vm/components/lux"
-	"github.com/luxfi/vm/platformvm/fx"
 	"github.com/luxfi/vm/secp256k1fx"
 	extwarp "github.com/luxfi/warp"
 
@@ -57,7 +57,7 @@ import (
 	txexecutor "github.com/luxfi/platformvm/txs/executor"
 	pmempool "github.com/luxfi/platformvm/txs/mempool"
 	pvalidators "github.com/luxfi/platformvm/validators"
-	txmempool "github.com/luxfi/vm/vms/txs/mempool"
+	txmempool "github.com/luxfi/vm/txs/mempool"
 )
 
 var (
@@ -913,7 +913,7 @@ func (vm *VM) ParseBlock(_ context.Context, b []byte) (consensusmanblock.Block, 
 	if err != nil {
 		return nil, err
 	}
-	return wrapBlock(vm.manager.NewBlock(statelessBlk)), nil
+	return vm.manager.NewBlock(statelessBlk), nil
 }
 
 func (vm *VM) GetBlock(_ context.Context, blkID ids.ID) (consensusmanblock.Block, error) {

@@ -11,14 +11,14 @@ import (
 	"strings"
 	"time"
 
+	"github.com/luxfi/container/iterator"
 	"github.com/luxfi/database"
 	"github.com/luxfi/ids"
+	"github.com/luxfi/platformvm/fx"
 	"github.com/luxfi/platformvm/status"
 	"github.com/luxfi/platformvm/txs"
-	"github.com/luxfi/container/iterator"
 	"github.com/luxfi/vm/components/gas"
 	"github.com/luxfi/vm/components/lux"
-	"github.com/luxfi/vm/platformvm/fx"
 )
 
 var (
@@ -487,10 +487,10 @@ func (d *diff) AddChain(createChainTx *txs.Tx) {
 	tx := createChainTx.Unsigned.(*txs.CreateChainTx)
 	if d.addedChains == nil {
 		d.addedChains = map[ids.ID][]*txs.Tx{
-			tx.ChainID: {createChainTx},
+			tx.ValidateNetworkID: {createChainTx},
 		}
 	} else {
-		d.addedChains[tx.ChainID] = append(d.addedChains[tx.ChainID], createChainTx)
+		d.addedChains[tx.ValidateNetworkID] = append(d.addedChains[tx.ValidateNetworkID], createChainTx)
 	}
 
 	// Register chain name for uniqueness (case-insensitive)

@@ -6,15 +6,15 @@ package utxo
 import (
 	"fmt"
 
+	"github.com/luxfi/crypto/hash"
 	"github.com/luxfi/ids"
+	"github.com/luxfi/math"
+	"github.com/luxfi/platformvm/fx"
 	"github.com/luxfi/platformvm/stakeable"
 	"github.com/luxfi/platformvm/txs"
 	"github.com/luxfi/timer/mockable"
-	"github.com/luxfi/crypto/hash"
-	"github.com/luxfi/utils/math"
 	"github.com/luxfi/vm/components/lux"
 	"github.com/luxfi/vm/components/verify"
-	"github.com/luxfi/vm/platformvm/fx"
 )
 
 var _ Verifier = (*verifier)(nil)

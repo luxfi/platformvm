@@ -22,7 +22,7 @@ import (
 	"github.com/luxfi/platformvm/config"
 	"github.com/luxfi/platformvm/txs"
 	"github.com/luxfi/vm/components/lux"
-	"github.com/luxfi/vm/vms/txs/mempool"
+	"github.com/luxfi/vm/txs/mempool"
 	"github.com/luxfi/warp"
 
 	pmempool "github.com/luxfi/platformvm/txs/mempool"

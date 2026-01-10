@@ -16,10 +16,10 @@ import (
 	"github.com/luxfi/constants"
 	"github.com/luxfi/crypto/bls/signer/localsigner"
 	"github.com/luxfi/ids"
+	"github.com/luxfi/platformvm/signer"
 	"github.com/luxfi/platformvm/stakeable"
 	"github.com/luxfi/utils"
 	"github.com/luxfi/vm/components/lux"
-	"github.com/luxfi/vm/platformvm/signer"
 	"github.com/luxfi/vm/secp256k1fx"
 	"github.com/luxfi/vm/types"
 )

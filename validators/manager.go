@@ -14,6 +14,7 @@ import (
 	"github.com/luxfi/cache/lru"
 	validators "github.com/luxfi/consensus/validator"
 	"github.com/luxfi/constants"
+	"github.com/luxfi/container/window"
 	"github.com/luxfi/crypto/bls"
 	"github.com/luxfi/ids"
 	"github.com/luxfi/platformvm/block"
@@ -23,7 +24,6 @@ import (
 	"github.com/luxfi/platformvm/status"
 	"github.com/luxfi/platformvm/txs"
 	"github.com/luxfi/timer/mockable"
-	"github.com/luxfi/container/window"
 )
 
 const (
@@ -391,7 +391,7 @@ func (m *manager) GetNetID(_ context.Context, chainID ids.ID) (ids.ID, error) {
 	if !ok {
 		return ids.Empty, fmt.Errorf("%q is not a blockchain", chainID)
 	}
-	return chain.ChainID, nil
+	return chain.ValidateNetworkID, nil
 }
 
 func (m *manager) OnAcceptedBlockID(blkID ids.ID) {

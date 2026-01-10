@@ -26,7 +26,9 @@ import (
 	validators "github.com/luxfi/consensus/validator"
 	"github.com/luxfi/consensus/validator/uptime"
 	"github.com/luxfi/constants"
+	"github.com/luxfi/container/iterator"
 	"github.com/luxfi/crypto/bls"
+	"github.com/luxfi/crypto/hash"
 	"github.com/luxfi/database"
 	"github.com/luxfi/database/linkeddb"
 	"github.com/luxfi/database/prefixdb"
@@ -35,6 +37,7 @@ import (
 	"github.com/luxfi/log"
 	"github.com/luxfi/platformvm/block"
 	"github.com/luxfi/platformvm/config"
+	"github.com/luxfi/platformvm/fx"
 	"github.com/luxfi/platformvm/genesis"
 	"github.com/luxfi/platformvm/metrics"
 	"github.com/luxfi/platformvm/reward"
@@ -42,13 +45,10 @@ import (
 	"github.com/luxfi/platformvm/txs"
 	"github.com/luxfi/timer"
 	"github.com/luxfi/upgrade"
-	"github.com/luxfi/crypto/hash"
-	"github.com/luxfi/container/iterator"
 	"github.com/luxfi/utils/maybe"
 	"github.com/luxfi/utils/wrappers"
 	"github.com/luxfi/vm/components/gas"
 	"github.com/luxfi/vm/components/lux"
-	"github.com/luxfi/vm/platformvm/fx"
 
 	safemath "github.com/luxfi/math"
 )
@@ -461,7 +461,7 @@ type state struct {
 	addedChains  map[ids.ID][]*txs.Tx                    // maps netID -> the newly added chains to the chain
 	chainCache   cache.Cacher[ids.ID, []*txs.Tx]         // cache of netID -> the chains after all local modifications []*txs.Tx
 	chainDBCache cache.Cacher[ids.ID, linkeddb.LinkedDB] // cache of netID -> linkedDB
-	chainDB      database.Database
+	chainTxDB    database.Database
 
 	// Chain name uniqueness - maps lowercase chain name to chain ID
 	addedChainNames map[string]ids.ID            // newly added chain names (lowercase) -> chainID
@@ -574,8 +574,7 @@ func New(
 	rewards reward.Calculator,
 ) (State, error) {
 	// Convert metric.Registerer to metric.Registry
-	// metricsReg is a *prometheus.Registry which implements Registerer
-	// Cast it to metric.Registry (which is *prometheus.Registry)
+	// metricsReg implements Registerer, cast it to metric.Registry
 	var reg metric.Registry
 	if r, ok := metricsReg.(metric.Registry); ok {
 		reg = r
@@ -857,7 +856,7 @@ func New(
 		supplyDB:         prefixdb.New(SupplyPrefix, baseDB),
 
 		addedChains:  make(map[ids.ID][]*txs.Tx),
-		chainDB:      prefixdb.New(ChainPrefix, baseDB),
+		chainTxDB:    prefixdb.New(ChainPrefix, baseDB),
 		chainCache:   chainCache,
 		chainDBCache: chainDBCache,
 
@@ -1149,13 +1148,13 @@ func (s *state) GetNetOwner(netID ids.ID) (fx.Owner, error) {
 		return nil, err
 	}
 
-	chain, ok := chainIntf.Unsigned.(*txs.CreateChainTx)
+	network, ok := chainIntf.Unsigned.(*txs.CreateNetworkTx)
 	if !ok {
 		return nil, fmt.Errorf("%q %w", netID, errIsNotNet)
 	}
 
-	s.SetNetOwner(netID, chain.Owner)
-	return chain.Owner, nil
+	s.SetNetOwner(netID, network.Owner)
+	return network.Owner, nil
 }
 
 func (s *state) SetNetOwner(netID ids.ID, owner fx.Owner) {
@@ -1254,7 +1253,7 @@ func (s *state) GetChains(netID ids.ID) ([]*txs.Tx, error) {
 
 func (s *state) AddChain(createChainTxIntf *txs.Tx) {
 	createChainTx := createChainTxIntf.Unsigned.(*txs.CreateChainTx)
-	netID := createChainTx.ChainID
+	netID := createChainTx.ValidateNetworkID
 	s.addedChains[netID] = append(s.addedChains[netID], createChainTxIntf)
 	if chains, cached := s.chainCache.Get(netID); cached {
 		chains = append(chains, createChainTxIntf)
@@ -1310,7 +1309,7 @@ func (s *state) getChainDB(netID ids.ID) linkeddb.LinkedDB {
 	if chainDB, cached := s.chainDBCache.Get(netID); cached {
 		return chainDB
 	}
-	rawChainDB := prefixdb.New(netID[:], s.chainDB)
+	rawChainDB := prefixdb.New(netID[:], s.chainTxDB)
 	chainDB := linkeddb.NewDefault(rawChainDB)
 	s.chainDBCache.Put(netID, chainDB)
 	return chainDB

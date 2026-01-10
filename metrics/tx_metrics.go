@@ -63,13 +63,12 @@ func (m *txMetrics) CreateChainTx(*txs.CreateChainTx) error {
 	return nil
 }
 
-// Removed in regenesis
-// func (m *txMetrics) CreateNetTx(*txs.CreateNetTx) error {
-// 	m.numTxs.With(metric.Labels{
-// 		txLabel: "create_chain",
-// 	}).Inc()
-// 	return nil
-// }
+func (m *txMetrics) CreateNetworkTx(*txs.CreateNetworkTx) error {
+	m.numTxs.With(metric.Labels{
+		txLabel: "create_network",
+	}).Inc()
+	return nil
+}
 
 func (m *txMetrics) ImportTx(*txs.ImportTx) error {
 	m.numTxs.With(metric.Labels{
@@ -182,13 +181,6 @@ func (m *txMetrics) DisableL1ValidatorTx(*txs.DisableL1ValidatorTx) error {
 func (m *txMetrics) AddChainValidatorTx(*txs.AddChainValidatorTx) error {
 	m.numTxs.With(metric.Labels{
 		txLabel: "add_net_validator",
-	}).Inc()
-	return nil
-}
-
-func (m *txMetrics) CreateChainTx(*txs.CreateChainTx) error {
-	m.numTxs.With(metric.Labels{
-		txLabel: "create_chain",
 	}).Inc()
 	return nil
 }

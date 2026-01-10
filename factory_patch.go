@@ -7,14 +7,14 @@ package platformvm
 
 import (
 	"github.com/luxfi/ids"
+	"github.com/luxfi/log"
 	"github.com/luxfi/version"
-	"github.com/luxfi/vm/vms"
 )
 
 // SingleValidatorFactory creates a mock Platform VM for single validator mode
 type SingleValidatorFactory struct{}
 
-func (f *SingleValidatorFactory) New(vms.Config) (interface{}, error) {
+func (f *SingleValidatorFactory) New(log.Logger) (interface{}, error) {
 	// Return a minimal implementation that doesn't require multiple validators
 	return &singleValidatorVM{}, nil
 }

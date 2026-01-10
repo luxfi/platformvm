@@ -1,6 +1,7 @@
 // Copyright (C) 2019-2025, Lux Industries, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
+// Package signer provides the Signer interface for BLS signatures.
 package signer
 
 import (
@@ -8,6 +9,7 @@ import (
 	"github.com/luxfi/vm/components/verify"
 )
 
+// Signer is the interface for a BLS signer.
 type Signer interface {
 	verify.Verifiable
 

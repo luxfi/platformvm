@@ -159,10 +159,10 @@ func New(t testing.TB, c Config) *platformvmgenesis.Genesis {
 			NetworkID:    c.NetworkID,
 			BlockchainID: constants.PlatformChainID,
 		}},
-		ChainID:        constants.PrimaryNetworkID, // Changed from NetID to NetID in regenesis
-		BlockchainName: XChainName,
-		VMID:           constants.XVMID, // Changed from AVMID to XVMID in Lux
-		ChainAuth:      &secp256k1fx.Input{},
+		ValidateNetworkID: constants.PrimaryNetworkID, // Changed from NetID to NetID in regenesis
+		BlockchainName:    XChainName,
+		VMID:              constants.XVMID, // Changed from AVMID to XVMID in Lux
+		ChainAuth:         &secp256k1fx.Input{},
 	}
 	chainTx := &txs.Tx{Unsigned: chain}
 	require.NoError(chainTx.Initialize(txs.GenesisCodec))

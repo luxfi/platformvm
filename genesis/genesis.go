@@ -10,13 +10,13 @@ import (
 
 	"github.com/luxfi/address"
 	"github.com/luxfi/ids"
+	"github.com/luxfi/math"
+	"github.com/luxfi/platformvm/signer"
 	"github.com/luxfi/platformvm/stakeable"
 	"github.com/luxfi/platformvm/txs"
 	"github.com/luxfi/platformvm/txs/txheap"
 	"github.com/luxfi/utils"
-	"github.com/luxfi/utils/math"
 	"github.com/luxfi/vm/components/lux"
-	"github.com/luxfi/vm/platformvm/signer"
 	"github.com/luxfi/vm/secp256k1fx"
 )
 
@@ -322,12 +322,12 @@ func New(
 				NetworkID:    networkID,
 				BlockchainID: ids.Empty,
 			}},
-			ChainID:        chain.ChainID,
-			BlockchainName: chain.Name,
-			VMID:           chain.VMID,
-			FxIDs:          chain.FxIDs,
-			GenesisData:    chain.GenesisData,
-			ChainAuth:      &secp256k1fx.Input{},
+			ValidateNetworkID: chain.ChainID,
+			BlockchainName:    chain.Name,
+			VMID:              chain.VMID,
+			FxIDs:             chain.FxIDs,
+			GenesisData:       chain.GenesisData,
+			ChainAuth:         &secp256k1fx.Input{},
 		}}
 		if err := tx.Initialize(txs.GenesisCodec); err != nil {
 			return nil, err

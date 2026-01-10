@@ -19,7 +19,7 @@ import (
 	"github.com/luxfi/platformvm/txs/executor"
 	"github.com/luxfi/platformvm/txs/fee"
 	"github.com/luxfi/platformvm/validators"
-	"github.com/luxfi/vm/vms/txs/mempool"
+	"github.com/luxfi/vm/txs/mempool"
 )
 
 var (

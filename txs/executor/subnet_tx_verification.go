@@ -9,10 +9,10 @@ import (
 
 	"github.com/luxfi/database"
 	"github.com/luxfi/ids"
+	"github.com/luxfi/platformvm/fx"
 	"github.com/luxfi/platformvm/state"
 	"github.com/luxfi/platformvm/txs"
 	"github.com/luxfi/vm/components/verify"
-	"github.com/luxfi/vm/platformvm/fx"
 )
 
 var (

@@ -10,8 +10,9 @@
 package executor
 
 import (
-	gomock "go.uber.org/mock/gomock"
 	reflect "reflect"
+
+	gomock "go.uber.org/mock/gomock"
 
 	consensusman "github.com/luxfi/consensus/engine/chain/block"
 	ids "github.com/luxfi/ids"

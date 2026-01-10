@@ -32,9 +32,9 @@ import (
 	"github.com/luxfi/platformvm/config"
 	"github.com/luxfi/timer/mockable"
 
+	"github.com/luxfi/platformvm/fx"
 	"github.com/luxfi/platformvm/genesis/genesistest"
 	"github.com/luxfi/platformvm/reward"
-	"github.com/luxfi/vm/platformvm/fx"
 
 	"github.com/luxfi/platformvm/state"
 	"github.com/luxfi/platformvm/state/statetest"
@@ -55,7 +55,7 @@ const (
 	defaultMinStakingDuration = 24 * time.Hour
 	defaultMaxStakingDuration = 365 * 24 * time.Hour
 
-	defaultTxFee = 100 * constants.NanoLux
+	defaultTxFee = 100 * constants.MicroLux
 )
 
 var (
@@ -237,10 +237,10 @@ func newWallet(t testing.TB, e *environment, c walletConfig) wallet.Wallet {
 	}
 	// Create a basic Config for wallet
 	walletConfig := &config.Config{
-		TxFee:                 constants.MilliLux,
-		CreateAssetTxFee:      constants.MilliLux,
-		CreateNetTxFee:        constants.Lux,
-		CreateChainTxFee: constants.Lux,
+		TxFee:              constants.MilliLux,
+		CreateAssetTxFee:   constants.MilliLux,
+		CreateNetworkTxFee: constants.Lux,
+		CreateChainTxFee:   constants.Lux,
 	}
 	return txstest.NewWallet(
 		t,
@@ -262,7 +262,7 @@ func addNet(t *testing.T, env *environment) {
 	})
 
 	var err error
-	testNet1, err = wallet.IssueCreateChainTx(
+	testNet1, err = wallet.IssueCreateNetworkTx(
 		&secp256k1fx.OutputOwners{
 			Threshold: 2,
 			Addrs: []ids.ShortID{

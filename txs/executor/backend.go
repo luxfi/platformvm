@@ -9,11 +9,11 @@ import (
 	"github.com/luxfi/ids"
 	"github.com/luxfi/log"
 	"github.com/luxfi/platformvm/config"
+	"github.com/luxfi/platformvm/fx"
 	"github.com/luxfi/platformvm/reward"
 	"github.com/luxfi/platformvm/utxo"
 	"github.com/luxfi/timer/mockable"
 	"github.com/luxfi/utils"
-	"github.com/luxfi/vm/platformvm/fx"
 )
 
 type Backend struct {

@@ -7,8 +7,8 @@ import (
 	"fmt"
 
 	"github.com/luxfi/crypto/bls"
-	"github.com/luxfi/ids"
 	"github.com/luxfi/crypto/hash"
+	"github.com/luxfi/ids"
 	"github.com/luxfi/vm/types"
 )
 

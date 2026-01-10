@@ -28,6 +28,7 @@ import (
 	"github.com/luxfi/log"
 	"github.com/luxfi/math/set"
 	"github.com/luxfi/platformvm/config"
+	"github.com/luxfi/platformvm/fx"
 	"github.com/luxfi/platformvm/genesis/genesistest"
 	"github.com/luxfi/platformvm/metrics"
 	"github.com/luxfi/platformvm/reward"
@@ -42,7 +43,6 @@ import (
 	"github.com/luxfi/utils"
 	"github.com/luxfi/vm/chains"
 	"github.com/luxfi/vm/chains/atomic"
-	"github.com/luxfi/vm/platformvm/fx"
 
 	"github.com/luxfi/platformvm/txs/txstest"
 	"github.com/luxfi/platformvm/utxo"
@@ -50,7 +50,7 @@ import (
 	"github.com/luxfi/sdk/wallet/chain/p/wallet"
 	"github.com/luxfi/vm/secp256k1fx"
 
-	txmempool "github.com/luxfi/vm/vms/txs/mempool"
+	txmempool "github.com/luxfi/vm/txs/mempool"
 )
 
 const (
@@ -60,7 +60,7 @@ const (
 	defaultMinStakingDuration = 24 * time.Hour
 	defaultMaxStakingDuration = 365 * 24 * time.Hour
 
-	defaultTxFee = 100 * constants.NanoLux
+	defaultTxFee = 100 * constants.MicroLux
 )
 
 var testNet1 *txs.Tx
@@ -272,7 +272,7 @@ func addNet(t testing.TB, env *environment) {
 	})
 
 	var err error
-	testNet1, err = wallet.IssueCreateChainTx(
+	testNet1, err = wallet.IssueCreateNetworkTx(
 		&secp256k1fx.OutputOwners{
 			Threshold: 2,
 			Addrs: []ids.ShortID{

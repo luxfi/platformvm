@@ -5,21 +5,21 @@ package platformvm
 
 import (
 	"context"
-	"github.com/luxfi/formatting"
 	"time"
 
 	"github.com/luxfi/address"
 	validators "github.com/luxfi/consensus/validator"
 	"github.com/luxfi/constants"
 	"github.com/luxfi/crypto/bls"
+	"github.com/luxfi/formatting"
 	"github.com/luxfi/ids"
+	"github.com/luxfi/platformvm/fx"
 	"github.com/luxfi/platformvm/status"
 	"github.com/luxfi/platformvm/validators/fee"
 	"github.com/luxfi/rpc"
 	"github.com/luxfi/utils/json"
 	"github.com/luxfi/vm/api"
 	"github.com/luxfi/vm/components/gas"
-	"github.com/luxfi/vm/platformvm/fx"
 	"github.com/luxfi/vm/secp256k1fx"
 
 	platformapi "github.com/luxfi/platformvm/api"

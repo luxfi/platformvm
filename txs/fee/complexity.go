@@ -12,16 +12,16 @@ import (
 	"github.com/luxfi/crypto/bls"
 	"github.com/luxfi/crypto/secp256k1"
 	"github.com/luxfi/ids"
+	"github.com/luxfi/math"
+	"github.com/luxfi/platformvm/fx"
+	"github.com/luxfi/platformvm/signer"
 	"github.com/luxfi/platformvm/stakeable"
 	"github.com/luxfi/platformvm/txs"
 	"github.com/luxfi/platformvm/warp"
-	"github.com/luxfi/utils/math"
 	"github.com/luxfi/utils/wrappers"
 	"github.com/luxfi/vm/components/gas"
 	"github.com/luxfi/vm/components/lux"
 	"github.com/luxfi/vm/components/verify"
-	"github.com/luxfi/vm/platformvm/fx"
-	"github.com/luxfi/vm/platformvm/signer"
 	"github.com/luxfi/vm/secp256k1fx"
 )
 
@@ -117,7 +117,7 @@ var (
 		gas.DBRead:  3, // get chain auth + check for chain transformation + check for chain conversion
 		gas.DBWrite: 1, // put chain
 	}
-	IntrinsicCreateChainTxComplexities = gas.Dimensions{
+	IntrinsicCreateNetworkTxComplexities = gas.Dimensions{
 		gas.Bandwidth: IntrinsicBaseTxComplexities[gas.Bandwidth] +
 			wrappers.IntLen, // owner typeID
 		gas.DBWrite: 1, // write chain owner
@@ -857,7 +857,7 @@ func (c *complexityVisitor) AddChainValidatorTx(tx *txs.AddChainValidatorTx) err
 	return err
 }
 
-func (c *complexityVisitor) CreateChainTx(tx *txs.CreateChainTx) error {
+func (c *complexityVisitor) CreateNetworkTx(tx *txs.CreateNetworkTx) error {
 	baseTxComplexity, err := baseTxComplexity(&tx.BaseTx)
 	if err != nil {
 		return err
@@ -866,7 +866,7 @@ func (c *complexityVisitor) CreateChainTx(tx *txs.CreateChainTx) error {
 	if err != nil {
 		return err
 	}
-	c.output, err = IntrinsicCreateChainTxComplexities.Add(
+	c.output, err = IntrinsicCreateNetworkTxComplexities.Add(
 		&baseTxComplexity,
 		&ownerComplexity,
 	)

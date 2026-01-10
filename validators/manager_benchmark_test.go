@@ -18,7 +18,6 @@ import (
 	"github.com/luxfi/ids"
 	"github.com/luxfi/timer/mockable"
 
-	"github.com/luxfi/constants"
 	"github.com/luxfi/platformvm/block"
 
 	"github.com/luxfi/platformvm/config"

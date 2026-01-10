@@ -7,20 +7,20 @@ import (
 	"cmp"
 	"errors"
 	"fmt"
-	"github.com/luxfi/formatting"
 	"net/http"
 
 	"github.com/luxfi/address"
+	"github.com/luxfi/formatting"
 	"github.com/luxfi/ids"
 	"github.com/luxfi/math"
 	"github.com/luxfi/platformvm/genesis"
+	"github.com/luxfi/platformvm/signer"
 	"github.com/luxfi/platformvm/stakeable"
 	"github.com/luxfi/platformvm/txs"
 	"github.com/luxfi/platformvm/txs/txheap"
 	"github.com/luxfi/utils"
 	"github.com/luxfi/utils/json"
 	"github.com/luxfi/vm/components/lux"
-	"github.com/luxfi/vm/platformvm/signer"
 	"github.com/luxfi/vm/secp256k1fx"
 )
 
@@ -363,12 +363,12 @@ func (*StaticService) BuildGenesis(_ *http.Request, args *BuildGenesisArgs, repl
 				NetworkID:    uint32(args.NetworkID),
 				BlockchainID: ids.Empty,
 			}},
-			ChainID:        chain.NetID,
-			BlockchainName: chain.Name,
-			VMID:           chain.VMID,
-			FxIDs:          chain.FxIDs,
-			GenesisData:    genesisBytes,
-			ChainAuth:      &secp256k1fx.Input{},
+			ValidateNetworkID: chain.NetID,
+			BlockchainName:    chain.Name,
+			VMID:              chain.VMID,
+			FxIDs:             chain.FxIDs,
+			GenesisData:       genesisBytes,
+			ChainAuth:         &secp256k1fx.Input{},
 		}}
 		if err := tx.Initialize(txs.GenesisCodec); err != nil {
 			return err

@@ -20,10 +20,10 @@ import (
 	"github.com/luxfi/utils"
 
 	"github.com/luxfi/crypto/hash"
+	"github.com/luxfi/platformvm/signer"
 	"github.com/luxfi/platformvm/stakeable"
 	"github.com/luxfi/platformvm/warp/message"
 	"github.com/luxfi/vm/components/lux"
-	"github.com/luxfi/vm/platformvm/signer"
 	"github.com/luxfi/vm/secp256k1fx"
 	"github.com/luxfi/vm/types"
 )

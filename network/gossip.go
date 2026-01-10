@@ -18,7 +18,7 @@ import (
 	"github.com/luxfi/p2p"
 	"github.com/luxfi/p2p/gossip"
 	"github.com/luxfi/platformvm/txs"
-	"github.com/luxfi/vm/vms/txs/mempool"
+	"github.com/luxfi/vm/txs/mempool"
 	"github.com/luxfi/warp"
 )
 

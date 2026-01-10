@@ -113,11 +113,11 @@ func FuzzStateTransitions(f *testing.F) {
 			chainID := ids.GenerateTestID()
 			createChainTx := &txs.Tx{
 				Unsigned: &txs.CreateChainTx{
-					ChainID:        ids.GenerateTestID(),
-					BlockchainName: "test-chain",
-					VMID:           ids.GenerateTestID(),
-					FxIDs:          []ids.ID{},
-					GenesisData:    []byte("genesis"),
+					ValidateNetworkID: ids.GenerateTestID(),
+					BlockchainName:    "test-chain",
+					VMID:              ids.GenerateTestID(),
+					FxIDs:             []ids.ID{},
+					GenesisData:       []byte("genesis"),
 				},
 			}
 

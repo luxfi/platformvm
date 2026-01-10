@@ -4,13 +4,13 @@
 package api
 
 import (
-	"github.com/luxfi/formatting"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 
 	"github.com/luxfi/address"
 	"github.com/luxfi/constants"
+	"github.com/luxfi/formatting"
 	"github.com/luxfi/ids"
 	"github.com/luxfi/platformvm/genesis"
 	"github.com/luxfi/utils/json"

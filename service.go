@@ -14,29 +14,29 @@ import (
 	"slices"
 	"time"
 
-	"github.com/luxfi/cache/lru"
-	"github.com/luxfi/formatting"
 	"github.com/luxfi/log"
 
+	"github.com/luxfi/cache/lru"
 	validators "github.com/luxfi/consensus/validator"
 	"github.com/luxfi/constants"
 	"github.com/luxfi/crypto/bls"
 	"github.com/luxfi/database"
+	"github.com/luxfi/formatting"
 	"github.com/luxfi/ids"
+	safemath "github.com/luxfi/math"
 	"github.com/luxfi/math/set"
+	"github.com/luxfi/platformvm/fx"
 	"github.com/luxfi/platformvm/reward"
+	"github.com/luxfi/platformvm/signer"
 	"github.com/luxfi/platformvm/stakeable"
 	"github.com/luxfi/platformvm/state"
 	"github.com/luxfi/platformvm/status"
 	"github.com/luxfi/platformvm/txs"
 	"github.com/luxfi/platformvm/validators/fee"
 	"github.com/luxfi/platformvm/warp/message"
-	safemath "github.com/luxfi/utils/math"
 	"github.com/luxfi/vm/api"
 	"github.com/luxfi/vm/components/gas"
 	"github.com/luxfi/vm/components/lux"
-	"github.com/luxfi/vm/platformvm/fx"
-	"github.com/luxfi/vm/platformvm/signer"
 	"github.com/luxfi/vm/secp256k1fx"
 	"github.com/luxfi/vm/types"
 
@@ -1219,7 +1219,7 @@ func (s *Service) nodeValidates(blockchainID ids.ID) bool {
 		return false
 	}
 
-	_, isValidator := s.vm.Validators.GetValidator(chain.ChainID, s.vm.nodeID)
+	_, isValidator := s.vm.Validators.GetValidator(chain.ValidateNetworkID, s.vm.nodeID)
 	return isValidator
 }
 
@@ -1304,7 +1304,7 @@ func (s *Service) Validates(_ *http.Request, args *ValidatesArgs, response *Vali
 				err,
 			)
 		}
-		_, ok := netTx.Unsigned.(*txs.CreateChainTx)
+		_, ok := netTx.Unsigned.(*txs.CreateNetworkTx)
 		if !ok {
 			return fmt.Errorf("%q is not a net", args.NetID)
 		}

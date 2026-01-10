@@ -9,7 +9,7 @@ import (
 	"github.com/luxfi/address"
 	"github.com/luxfi/ids"
 	"github.com/luxfi/platformvm/api"
-	"github.com/luxfi/vm/platformvm/signer"
+	"github.com/luxfi/platformvm/signer"
 )
 
 // ClientStaker is the representation of a staker sent via client.

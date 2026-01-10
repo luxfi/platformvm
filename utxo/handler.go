@@ -8,18 +8,18 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/luxfi/crypto/hash"
 	"github.com/luxfi/crypto/secp256k1"
 	"github.com/luxfi/ids"
+	safemath "github.com/luxfi/math"
 	"github.com/luxfi/math/set"
+	"github.com/luxfi/platformvm/fx"
 	"github.com/luxfi/platformvm/stakeable"
 	"github.com/luxfi/platformvm/state"
 	"github.com/luxfi/platformvm/txs"
 	"github.com/luxfi/timer/mockable"
-	"github.com/luxfi/crypto/hash"
-	safemath "github.com/luxfi/utils/math"
 	"github.com/luxfi/vm/components/lux"
 	"github.com/luxfi/vm/components/verify"
-	"github.com/luxfi/vm/platformvm/fx"
 	"github.com/luxfi/vm/secp256k1fx"
 )
 

@@ -16,16 +16,16 @@ import (
 	time "time"
 
 	validators "github.com/luxfi/consensus/validator"
+	iterator "github.com/luxfi/container/iterator"
 	database "github.com/luxfi/database"
 	ids "github.com/luxfi/ids"
 	log "github.com/luxfi/log"
 	block "github.com/luxfi/platformvm/block"
+	fx "github.com/luxfi/platformvm/fx"
 	status "github.com/luxfi/platformvm/status"
 	txs "github.com/luxfi/platformvm/txs"
-	iterator "github.com/luxfi/container/iterator"
 	gas "github.com/luxfi/vm/components/gas"
 	lux "github.com/luxfi/vm/components/lux"
-	fx "github.com/luxfi/vm/platformvm/fx"
 	gomock "go.uber.org/mock/gomock"
 )
 

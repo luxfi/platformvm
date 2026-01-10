@@ -9,11 +9,11 @@ import (
 
 	"github.com/stretchr/testify/require"
 
+	"github.com/luxfi/container/iterator"
 	"github.com/luxfi/database"
 	"github.com/luxfi/ids"
 	"github.com/luxfi/platformvm/genesis/genesistest"
 	"github.com/luxfi/platformvm/txs"
-	"github.com/luxfi/container/iterator"
 )
 
 func TestBaseStakersPruning(t *testing.T) {

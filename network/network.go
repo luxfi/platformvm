@@ -20,7 +20,7 @@ import (
 	"github.com/luxfi/platformvm/state"
 	"github.com/luxfi/platformvm/txs"
 	"github.com/luxfi/platformvm/warp"
-	"github.com/luxfi/vm/vms/txs/mempool"
+	"github.com/luxfi/vm/txs/mempool"
 	extwarp "github.com/luxfi/warp"
 )
 

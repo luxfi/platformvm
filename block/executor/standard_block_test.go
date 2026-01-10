@@ -13,6 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/luxfi/constants"
+	"github.com/luxfi/container/iterator"
 	"github.com/luxfi/crypto/secp256k1"
 	"github.com/luxfi/database"
 	"github.com/luxfi/ids"
@@ -23,7 +24,6 @@ import (
 	"github.com/luxfi/platformvm/txs"
 	"github.com/luxfi/platformvm/txs/executor"
 	"github.com/luxfi/upgrade/upgradetest"
-	"github.com/luxfi/container/iterator"
 	"github.com/luxfi/vm/components/gas"
 	"github.com/luxfi/vm/components/lux"
 	"github.com/luxfi/vm/secp256k1fx"
@@ -167,9 +167,11 @@ func TestBanffStandardBlockTimeVerification(t *testing.T) {
 				},
 			}},
 		}},
-		Owner: &secp256k1fx.OutputOwners{},
 	}
-	tx := &txs.Tx{Unsigned: utx}
+	tx := &txs.Tx{Unsigned: &txs.CreateNetworkTx{
+		BaseTx: utx.BaseTx,
+		Owner:  &secp256k1fx.OutputOwners{},
+	}}
 	require.NoError(tx.Sign(txs.Codec, [][]*secp256k1.PrivateKey{{}}))
 
 	{

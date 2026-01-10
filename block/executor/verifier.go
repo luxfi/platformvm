@@ -8,6 +8,7 @@ import (
 	"fmt"
 
 	"github.com/luxfi/ids"
+	"github.com/luxfi/math"
 	"github.com/luxfi/math/set"
 	"github.com/luxfi/platformvm/block"
 	"github.com/luxfi/platformvm/config"
@@ -16,7 +17,6 @@ import (
 	"github.com/luxfi/platformvm/status"
 	"github.com/luxfi/platformvm/txs"
 	txexecutor "github.com/luxfi/platformvm/txs/executor"
-	"github.com/luxfi/utils/math"
 	"github.com/luxfi/vm/chains/atomic"
 
 	txfee "github.com/luxfi/platformvm/txs/fee"

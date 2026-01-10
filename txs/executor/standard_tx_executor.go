@@ -14,18 +14,18 @@ import (
 	"github.com/luxfi/constants"
 	"github.com/luxfi/crypto/bls"
 	"github.com/luxfi/ids"
+	"github.com/luxfi/math"
 	"github.com/luxfi/math/set"
+	"github.com/luxfi/platformvm/signer"
 	"github.com/luxfi/platformvm/state"
 	"github.com/luxfi/platformvm/txs"
 	"github.com/luxfi/platformvm/txs/fee"
 	"github.com/luxfi/platformvm/warp"
 	"github.com/luxfi/platformvm/warp/message"
 	"github.com/luxfi/platformvm/warp/payload"
-	"github.com/luxfi/utils/math"
 	"github.com/luxfi/vm/chains/atomic"
 	"github.com/luxfi/vm/components/gas"
 	"github.com/luxfi/vm/components/lux"
-	"github.com/luxfi/vm/platformvm/signer"
 	"github.com/luxfi/vm/secp256k1fx"
 )
 
@@ -205,7 +205,7 @@ func (e *standardTxExecutor) CreateChainTx(tx *txs.CreateChainTx) error {
 		return fmt.Errorf("chain name %q is already taken", tx.BlockchainName)
 	}
 
-	baseTxCreds, err := verifyPoAChainAuthorization(e.backend.Fx, e.state, e.tx, tx.ChainID, tx.ChainAuth)
+	baseTxCreds, err := verifyPoAChainAuthorization(e.backend.Fx, e.state, e.tx, tx.ValidateNetworkID, tx.ChainAuth)
 	if err != nil {
 		return err
 	}
@@ -245,7 +245,7 @@ func (e *standardTxExecutor) CreateChainTx(tx *txs.CreateChainTx) error {
 	return nil
 }
 
-func (e *standardTxExecutor) CreateChainTx(tx *txs.CreateChainTx) error {
+func (e *standardTxExecutor) CreateNetworkTx(tx *txs.CreateNetworkTx) error {
 	// Make sure this transaction is well formed.
 	if err := e.tx.SyntacticVerify(e.backend.Ctx); err != nil {
 		return err

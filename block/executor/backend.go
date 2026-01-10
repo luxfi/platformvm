@@ -14,7 +14,7 @@ import (
 	"github.com/luxfi/platformvm/block"
 	"github.com/luxfi/platformvm/state"
 	"github.com/luxfi/platformvm/txs"
-	"github.com/luxfi/vm/vms/txs/mempool"
+	"github.com/luxfi/vm/txs/mempool"
 )
 
 var errConflictingParentTxs = errors.New("block contains a transaction that conflicts with a transaction in a parent block")

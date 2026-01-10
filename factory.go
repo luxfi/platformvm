@@ -6,10 +6,10 @@ package platformvm
 import (
 	"github.com/luxfi/log"
 	"github.com/luxfi/platformvm/config"
-	"github.com/luxfi/vm/vms"
+	"github.com/luxfi/vm/manager"
 )
 
-var _ vms.Factory = (*Factory)(nil)
+var _ manager.Factory = (*Factory)(nil)
 
 // Factory can create new instances of the Platform Chain
 type Factory struct {

@@ -20,7 +20,7 @@ import (
 	"github.com/luxfi/vm/components/verify"
 	"github.com/luxfi/vm/secp256k1fx"
 
-	safemath "github.com/luxfi/utils/math"
+	safemath "github.com/luxfi/math"
 )
 
 var _ txs.UnsignedTx = (*dummyUnsignedTx)(nil)

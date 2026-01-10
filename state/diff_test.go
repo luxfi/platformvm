@@ -12,17 +12,17 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/luxfi/constants"
+	"github.com/luxfi/container/iterator"
 	"github.com/luxfi/database"
 	"github.com/luxfi/database/memdb"
 	"github.com/luxfi/ids"
 	"github.com/luxfi/math/set"
+	"github.com/luxfi/platformvm/fx/fxmock"
 	"github.com/luxfi/platformvm/status"
 	"github.com/luxfi/platformvm/txs"
 	"github.com/luxfi/utils"
-	"github.com/luxfi/container/iterator"
 	"github.com/luxfi/vm/components/gas"
 	"github.com/luxfi/vm/components/lux"
-	"github.com/luxfi/vm/platformvm/fx/fxmock"
 )
 
 type nilStateGetter struct{}
@@ -550,7 +550,7 @@ func TestDiffNet(t *testing.T) {
 
 	// Initialize parent with one chain
 	parentStateCreateNetTx := &txs.Tx{
-		Unsigned: &txs.CreateChainTx{
+		Unsigned: &txs.CreateNetworkTx{
 			Owner: fxmock.NewOwner(ctrl),
 		},
 	}
@@ -571,7 +571,7 @@ func TestDiffNet(t *testing.T) {
 
 	// Put a chain
 	createNetTx := &txs.Tx{
-		Unsigned: &txs.CreateChainTx{
+		Unsigned: &txs.CreateNetworkTx{
 			Owner: fxmock.NewOwner(ctrl),
 		},
 	}
@@ -601,7 +601,7 @@ func TestDiffChain(t *testing.T) {
 	// Initialize parent with one chain
 	parentStateCreateChainTx := &txs.Tx{
 		Unsigned: &txs.CreateChainTx{
-			ChainID: chainID,
+			ValidateNetworkID: chainID,
 		},
 	}
 	state.AddChain(parentStateCreateChainTx)
@@ -622,7 +622,7 @@ func TestDiffChain(t *testing.T) {
 	// Put a chain
 	createChainTx := &txs.Tx{
 		Unsigned: &txs.CreateChainTx{
-			ChainID: chainID, // note this is the same net as [parentStateCreateChainTx]
+			ValidateNetworkID: chainID, // note this is the same net as [parentStateCreateChainTx]
 		},
 	}
 	diff.AddChain(createChainTx)
@@ -661,7 +661,7 @@ func TestDiffTx(t *testing.T) {
 	netID := ids.GenerateTestID()
 	tx := &txs.Tx{
 		Unsigned: &txs.CreateChainTx{
-			ChainID: netID,
+			ValidateNetworkID: netID,
 		},
 	}
 	tx.SetBytes(utils.RandomBytes(16), utils.RandomBytes(16))
@@ -680,7 +680,7 @@ func TestDiffTx(t *testing.T) {
 		// [state] returns 1 tx.
 		parentTx := &txs.Tx{
 			Unsigned: &txs.CreateChainTx{
-				ChainID: netID,
+				ValidateNetworkID: netID,
 			},
 		}
 		parentTx.SetBytes(utils.RandomBytes(16), utils.RandomBytes(16))
@@ -864,7 +864,7 @@ func TestDiffNetOwner(t *testing.T) {
 		owner2 = fxmock.NewOwner(ctrl)
 
 		createNetTx = &txs.Tx{
-			Unsigned: &txs.CreateChainTx{
+			Unsigned: &txs.CreateNetworkTx{
 				BaseTx: txs.BaseTx{},
 				Owner:  owner1,
 			},
@@ -963,7 +963,7 @@ func TestDiffStacking(t *testing.T) {
 		owner3 = fxmock.NewOwner(ctrl)
 
 		createNetTx = &txs.Tx{
-			Unsigned: &txs.CreateChainTx{
+			Unsigned: &txs.CreateNetworkTx{
 				BaseTx: txs.BaseTx{},
 				Owner:  owner1,
 			},

@@ -180,12 +180,12 @@ func createTestDecisionTxs(count int) ([]*txs.Tx, error) {
 					},
 				}},
 			}},
-			ChainID:        ids.GenerateTestID(),
-			BlockchainName: "chainName",
-			VMID:           ids.GenerateTestID(),
-			FxIDs:          []ids.ID{ids.GenerateTestID()},
-			GenesisData:    []byte{'g', 'e', 'n', 'D', 'a', 't', 'a'},
-			ChainAuth:      &secp256k1fx.Input{SigIndices: []uint32{1}},
+			ValidateNetworkID: ids.GenerateTestID(),
+			BlockchainName:    "chainName",
+			VMID:              ids.GenerateTestID(),
+			FxIDs:             []ids.ID{ids.GenerateTestID()},
+			GenesisData:       []byte{'g', 'e', 'n', 'D', 'a', 't', 'a'},
+			ChainAuth:         &secp256k1fx.Input{SigIndices: []uint32{1}},
 		}
 
 		tx, err := txs.NewSigned(utx, txs.Codec, nil)
